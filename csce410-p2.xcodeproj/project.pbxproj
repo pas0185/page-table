@@ -1,0 +1,78 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		15B337CC1BB4AE6400406FE4 /* frame_pool.H */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = frame_pool.H; sourceTree = "<group>"; };
+		15B337CD1BB4AE6400406FE4 /* kernel.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kernel.C; sourceTree = "<group>"; };
+		15B337CE1BB4AE6400406FE4 /* page_table.H */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = page_table.H; sourceTree = "<group>"; };
+		15B337CF1BB4B17400406FE4 /* frame_pool.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = frame_pool.C; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		15B337C51BB4AE0800406FE4 = {
+			isa = PBXGroup;
+			children = (
+				15B337CF1BB4B17400406FE4 /* frame_pool.C */,
+				15B337CC1BB4AE6400406FE4 /* frame_pool.H */,
+				15B337CD1BB4AE6400406FE4 /* kernel.C */,
+				15B337CE1BB4AE6400406FE4 /* page_table.H */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		15B337C61BB4AE0800406FE4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 15B337C91BB4AE0800406FE4 /* Build configuration list for PBXProject "csce410-p2" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 15B337C51BB4AE0800406FE4;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		15B337CA1BB4AE0800406FE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		15B337CB1BB4AE0800406FE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		15B337C91BB4AE0800406FE4 /* Build configuration list for PBXProject "csce410-p2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15B337CA1BB4AE0800406FE4 /* Debug */,
+				15B337CB1BB4AE0800406FE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 15B337C61BB4AE0800406FE4 /* Project object */;
+}
