@@ -18,8 +18,6 @@
 /* DEFINES */
 /*--------------------------------------------------------------------------*/
 
-/* -- (none) -- */
-
 /*--------------------------------------------------------------------------*/
 /* INCLUDES */
 /*--------------------------------------------------------------------------*/
@@ -40,6 +38,14 @@ class FramePool {
 
 private:
      /* -- DEFINE YOUR FRAME POOL DATA STRUCTURE(s) HERE. */
+
+    /* REFERENCES THE VERY FIRST FRAME OF THIS FRAME POOL */
+    unsigned long     * start_frame;
+
+    /* DATA FOR INDEX OF FRAMES; 0=VACANT, 1=OCCUPIED */
+    unsigned long     * frame_vacancy_bitmap;
+
+    unsigned long     number_of_frames;
      
 public:
   

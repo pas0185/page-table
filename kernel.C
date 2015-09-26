@@ -18,10 +18,10 @@
 
 #define MB * (0x1 << 20)
 #define KB * (0x1 << 10)
-#define KERNEL_POOL_START_FRAME ((2 MB) / (4 KB))
-#define KERNEL_POOL_SIZE ((2 MB) / (4 KB))
-#define PROCESS_POOL_START_FRAME ((4 MB) / (4 KB))
-#define PROCESS_POOL_SIZE ((28 MB) / (4 KB))
+#define KERNEL_POOL_START_FRAME ((2 MB) / (4 KB))   // 500
+#define KERNEL_POOL_SIZE ((2 MB) / (4 KB))          // 500
+#define PROCESS_POOL_START_FRAME ((4 MB) / (4 KB))  // 1000 
+#define PROCESS_POOL_SIZE ((28 MB) / (4 KB))        // 7000
 /* definition of the kernel and process memory pools */
 
 #define MEM_HOLE_START_FRAME ((15 MB) / (4 KB))
