@@ -18,11 +18,14 @@
 /* DEFINES */
 /*--------------------------------------------------------------------------*/
 
+#define CHAR_BIT 8
+
 /*--------------------------------------------------------------------------*/
 /* INCLUDES */
 /*--------------------------------------------------------------------------*/
 
-/* -- (none) -- */
+#include <stdio.h>
+#include <math.h>
 
 /*--------------------------------------------------------------------------*/
 /* DATA STRUCTURES */
@@ -39,14 +42,16 @@ class FramePool {
 private:
      /* -- DEFINE YOUR FRAME POOL DATA STRUCTURE(s) HERE. */
 
+//   static unsigned long    number_of_frames;
+     
     /* REFERENCES THE VERY FIRST FRAME OF THIS FRAME POOL */
-    unsigned long     * start_frame;
+//   static unsigned long   * start_frame;
 
     /* DATA FOR INDEX OF FRAMES; 0=VACANT, 1=OCCUPIED */
-    unsigned long     * frame_vacancy_bitmap;
+    /* Pointer to a long which stores availability */
+   // static unsigned long   * frame_vacancy_bitmap;
+//   static unsigned char   * frame_vacancy_bitmap;
 
-    unsigned long     number_of_frames;
-     
 public:
   
    FramePool(unsigned long _base_frame_no,
@@ -76,6 +81,11 @@ public:
    /* Mark the area of physical memory as inaccessible. The arguments have the
     * same semanticas as in the constructor.
     */
+
+    void set_nth_bit(unsigned char *bitmap, int idx);
+    void clear_nth_bit(unsigned char *bitmap, int idx);
+    int get_nth_bit(unsigned char *bitmap, int idx);
+
 
    static void release_frame(unsigned long _frame_no);
    /* Releases frame back to the given frame pool.
