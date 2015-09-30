@@ -33,13 +33,28 @@ int main(int argc, char** argv) {
                               KERNEL_POOL_SIZE,
                               0);
 
+	/*		TEST THE GET_FRAME() 		*/
 	int i;
 	for (i = 0; i < 10; i++) {
 		unsigned long frame = kernel_mem_pool.get_frame();
 		printf("Got kernel frame <#%lu>\n", frame);
 	}
 
+	printVacancyBitmap();
+
 	return 0;
+}
+
+void printVacancyBitmap() {
+
+	printf("\nNon-zero bytes in the vacancy bitmap:\n");
+	for (i = 0; i < (number_of_frames / 8); i++) {
+		// int val = *(frame_vacancy_bitmap + i);
+		if (*(frame_vacancy_bitmap + i)) {
+			printf("bitmap[%d] = %d\n", i, *(frame_vacancy_bitmap + i));
+		}
+	}
+	printf("\n");
 }
 
 FramePool::FramePool(unsigned long _base_frame_no,
