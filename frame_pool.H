@@ -87,7 +87,7 @@ public:
     int get_nth_bit(unsigned char *bitmap, int idx);
 
 
-   static void release_frame(unsigned long _frame_no);
+   void release_frame(unsigned long _frame_no);
    /* Releases frame back to the given frame pool.
       The frame is identified by the frame number. 
       NOTE: This function is static because there may be more than one frame pool
