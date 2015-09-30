@@ -33,13 +33,19 @@ int main(int argc, char** argv) {
                               KERNEL_POOL_SIZE,
                               0);
 
+	int i;
+	for (i = 0; i < 10; i++) {
+		unsigned long frame = kernel_mem_pool.get_frame();
+		printf("Got kernel frame <#%lu>\n", frame);
+	}
 
 	return 0;
 }
 
 FramePool::FramePool(unsigned long _base_frame_no,
                      unsigned long _nframes,
-                     unsigned long _info_frame_no) {
+                     unsigned long _info_frame_no) 
+{
 
 	printf("Initializing FramePool\n");
 
@@ -61,15 +67,14 @@ FramePool::FramePool(unsigned long _base_frame_no,
 	number_of_frames = _nframes;
 
 
-	printf("Physical address starts at:			%p\n", start_frame);
-	printf("Range of frames:           			[%lu, %lu]\n", 
-			_base_frame_no, 
-			_base_frame_no + number_of_frames);
+	printf("Physical address starts at:	%p\n", start_frame);
+	printf("Range of frames: [%lu, %lu]\n", 
+			_base_frame_no, _base_frame_no + number_of_frames);
 	
 	// Initialize the bitmap pointer according to the info frame
 	frame_vacancy_bitmap = (unsigned char *) start_frame + (_info_frame_no * FRAME_SIZE);
-	printf("Vacancy bitmap page #:				%lu\n", _info_frame_no);
-	printf("Vacancy bitmap physical address:	%p\n", frame_vacancy_bitmap);
+	printf("Vacancy bitmap page <#%lu>\n", _info_frame_no);
+	printf("Vacancy bitmap physical address: %p\n", frame_vacancy_bitmap);
 
 
 	// Clear all entries in the bitmap
@@ -89,25 +94,20 @@ unsigned long FramePool::get_frame() {
 
 	// Allocate an available frame from the the bitmap,
 	// If successful, return its frame number. Otherwise return 0
-/*
+
+	printf("BEGIN: FramePool searching for an available frame\n");
 	unsigned long i;
-	unsigned long last_frame = *start_frame + number_of_frames - 1;
-
-	printf("BEGIN: FramePool searching for an available frame in the range [%lu, %lu]", *start_frame, last_frame);
-//TODO: some smarter bit logic to find an available frame
-
 	for (i = 0; i < number_of_frames; i++) {
 
 		if (get_nth_bit(frame_vacancy_bitmap, i) == 0) {
-			printf("SUCCESS: FramePool found vacancy at frame %lu", i);
+			set_nth_bit(frame_vacancy_bitmap, i);
+			printf("SUCCESS: FramePool found vacancy at frame <#%lu>\n", i);
 			return i;
 		}
 	}
 
 
-	printf("ERROR: FramePool could not find a vacant frame");
-
-*/
+	printf("ERROR: FramePool could not find a vacant frame\n");
 	return 0;
 }
 
@@ -133,7 +133,7 @@ static void release_frame(unsigned long _frame_no) {
 
 void FramePool::set_nth_bit(unsigned char *bitmap, int idx)
 {
-    // bitmap[idx / CHAR_BIT] |= 1 << (idx % CHAR_BIT);
+    bitmap[idx / CHAR_BIT] |= 1 << (idx % CHAR_BIT);
 }
 
 void FramePool::clear_nth_bit(unsigned char *bitmap, int idx)
