@@ -18,14 +18,14 @@
 
 #define MB * (0x1 << 20)
 #define KB * (0x1 << 10)
-#define KERNEL_POOL_START_FRAME ((2 MB) / (4 KB))   // 500
-#define KERNEL_POOL_SIZE ((2 MB) / (4 KB))          // 500
-#define PROCESS_POOL_START_FRAME ((4 MB) / (4 KB))  // 1000 
-#define PROCESS_POOL_SIZE ((28 MB) / (4 KB))        // 7000
+#define KERNEL_POOL_START_FRAME ((2 MB) / (4 KB))   // 512  - start frame for kernel pool
+#define KERNEL_POOL_SIZE ((2 MB) / (4 KB))          // 512  - # frames in kernel pool
+#define PROCESS_POOL_START_FRAME ((4 MB) / (4 KB))  // 1024 - start frame of process pool 
+#define PROCESS_POOL_SIZE ((28 MB) / (4 KB))        // 7168 - frames in process pool
 /* definition of the kernel and process memory pools */
 
 #define MEM_HOLE_START_FRAME ((15 MB) / (4 KB))
-#define MEM_HOLE_SIZE ((1 MB) / (4 KB))
+#define MEM_HOLE_SIZE ((1 MB) / (4 KB))             // 256 frames for mem hole
 /* we have a 1 MB hole in physical memory starting at address 15 MB */
 
 #define FAULT_ADDR (4 MB)
@@ -86,7 +86,7 @@ int main() {
     FramePool process_mem_pool(PROCESS_POOL_START_FRAME,
                                PROCESS_POOL_SIZE,
                                process_mem_pool_info_frame);
-    process_mem_pool.mark_inaccessible(MEM_HOLE_START_FRAME, MEM_HOLE_SIZE);
+    process_mem_pool.mark_inaccessible(MEM_HOLE_START_FRAME, MEM_HOLE_SIZE);  // Frames [1024, ]
 
     /* -- INITIALIZE MEMORY (PAGING) -- */
 
