@@ -24,8 +24,8 @@
 /* INCLUDES */
 /*--------------------------------------------------------------------------*/
 
-#include <stdio.h>
-#include <math.h>
+// #include <stdio.h>
+// #include <math.h>
 
 /*--------------------------------------------------------------------------*/
 /* DATA STRUCTURES */
@@ -40,17 +40,12 @@
 class FramePool {
 
 private:
-     /* -- DEFINE YOUR FRAME POOL DATA STRUCTURE(s) HERE. */
 
-//   static unsigned long    number_of_frames;
-     
-    /* REFERENCES THE VERY FIRST FRAME OF THIS FRAME POOL */
-//   static unsigned long   * start_frame;
+  static unsigned long    base_frame;
+  static unsigned long    num_frames;
 
-    /* DATA FOR INDEX OF FRAMES; 0=VACANT, 1=OCCUPIED */
-    /* Pointer to a long which stores availability */
-   // static unsigned long   * frame_vacancy_bitmap;
-//   static unsigned char   * frame_vacancy_bitmap;
+  static unsigned long  * base_addr;
+  static unsigned char  * frame_vacancy_bitmap;
 
 public:
   
@@ -82,11 +77,6 @@ public:
     * same semanticas as in the constructor.
     */
 
-    void set_nth_bit(unsigned char *bitmap, int idx);
-    void clear_nth_bit(unsigned char *bitmap, int idx);
-    int get_nth_bit(unsigned char *bitmap, int idx);
-
-
    void release_frame(unsigned long _frame_no);
    /* Releases frame back to the given frame pool.
       The frame is identified by the frame number. 
@@ -94,5 +84,11 @@ public:
       defined in the system, and it is unclear which one this frame belongs to.
       This function must first identify the correct frame pool and then call the frame
       pool's release_frame function. */
+
+      
+    void set_nth_bit(unsigned char *bitmap, int idx);
+    void clear_nth_bit(unsigned char *bitmap, int idx);
+    int get_nth_bit(unsigned char *bitmap, int idx);
+    void printVacancyBitmap();
 };
 #endif

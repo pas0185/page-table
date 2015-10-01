@@ -12,7 +12,8 @@
  */
 
 #include "frame_pool.H"
-#include <stdlib.h>
+#include "Console.H"
+// #include <stdlib.h>
 
 
 #define MB * (0x1 << 20)
@@ -25,34 +26,41 @@
 #define FRAME_SIZE 4 KB
 
 
-unsigned long * base_addr;
-unsigned long base_frame;
-unsigned long num_frames;
-unsigned char * frame_vacancy_bitmap;
+  unsigned long    FramePool::base_frame;
+  unsigned long    FramePool::num_frames;
 
-int main(int argc, char** argv) {
+  // unsigned long  * FramePool::base_addr;
+  unsigned char  * FramePool::frame_vacancy_bitmap;
 
-	FramePool kernel_mem_pool(KERNEL_POOL_START_FRAME,
-                              KERNEL_POOL_SIZE,
-                              0);
+// unsigned long FramePool::base_frame;
+// unsigned long FramePool::num_frames;
 
-	/*		TEST THE GET_FRAME() 		*/
-	int i;
-	for (i = 0; i < 10; i++) {
-		unsigned long frame = kernel_mem_pool.get_frame();
-		// printf("Got kernel frame <#%lu>\n", frame);
-	}
+// unsigned long * FramePool::base_addr;
+// unsigned char * FramePool::frame_vacancy_bitmap;
 
-	/*		TEST THE RELEASE_FRAME()	*/
-	int rf1 = 3, rf2 = -3, rf3 = 517;
-	kernel_mem_pool.release_frame(rf1);
-	kernel_mem_pool.release_frame(rf2);
-	kernel_mem_pool.release_frame(rf3);
+// int main(int argc, char** argv) {
 
-	// printVacancyBitmap();
+// 	FramePool kernel_mem_pool(KERNEL_POOL_START_FRAME,
+//                               KERNEL_POOL_SIZE,
+//                               0);
 
-	return 0;
-}
+// 	/*		TEST THE GET_FRAME() 		*/
+// 	int i;
+// 	for (i = 0; i < 10; i++) {
+// 		unsigned long frame = kernel_mem_pool.get_frame();
+// 		// printf("Got kernel frame <#%lu>\n", frame);
+// 	}
+
+// 	/*		TEST THE RELEASE_FRAME()	*/
+// 	int rf1 = 3, rf2 = -3, rf3 = 517;
+// 	kernel_mem_pool.release_frame(rf1);
+// 	kernel_mem_pool.release_frame(rf2);
+// 	kernel_mem_pool.release_frame(rf3);
+
+// 	// printVacancyBitmap();
+
+// 	return 0;
+// }
 
 
 FramePool::FramePool(unsigned long _base_frame_no,
@@ -60,36 +68,29 @@ FramePool::FramePool(unsigned long _base_frame_no,
                      unsigned long _info_frame_no) 
 {
 
-	printf("Initializing FramePool\n");
+	Console::puts("Initializing FramePool\n");
 
 	// Store the base frame and number of frames in this pool
 	base_frame = _base_frame_no;
 	num_frames = _nframes;
 
-
-	// unsigned long foo = 0;
-	// unsigned long * TEST_ADDR = &foo;
-	// base_addr = TEST_ADDR;
-	// ** OR **
-	// base_addr = (unsigned long *) 0x7f70308000; //TEST_ADDR;
-	// ** OR **
 	// Start Kernel mem pool at 2MB
 	// base_addr = (unsigned long *) 0x20000; 
 	// ** OR **
-	base_addr = (unsigned long *) malloc(num_frames * FRAME_SIZE);
+	// base_addr = (unsigned long *) malloc(num_frames * FRAME_SIZE);
 
 	// ADD THIS BACK IN! Adjust for the base frame parameter
 	// base_addr += _base_frame_no * FRAME_SIZE;
 
 
-	printf("Physical address starts at:	%p\n", base_addr);
-	printf("Range of frames: [%lu, %lu]\n", 
-			base_frame, base_frame + num_frames);
+	// printf("Physical address starts at:	%p\n", base_addr);
+	// printf("Range of frames: [%lu, %lu]\n", 
+	// 		base_frame, base_frame + num_frames);
 	
 	// Initialize the bitmap pointer according to the info frame
 	frame_vacancy_bitmap = (unsigned char *) base_addr + (_info_frame_no * FRAME_SIZE);
-	printf("Vacancy bitmap page <#%lu>\n", _info_frame_no);
-	printf("Vacancy bitmap physical address: %p\n", frame_vacancy_bitmap);
+	// printf("Vacancy bitmap page <#%lu>\n", _info_frame_no);
+	// printf("Vacancy bitmap physical address: %p\n", frame_vacancy_bitmap);
 
 
 	// Clear all entries in the bitmap
@@ -98,11 +99,11 @@ FramePool::FramePool(unsigned long _base_frame_no,
 		clear_nth_bit(frame_vacancy_bitmap, i);
 	}
 
-	printf("Cleared all entries in vacancy bitmap\n");
+	Console::puts("Cleared all entries in vacancy bitmap\n");
 
 	// Mark the bitmap frame as inaccessible
 	mark_inaccessible(_info_frame_no, 1);
-	printf("Marked Vacancy bitmap frame as inaccessible\n");
+	Console::puts("Marked Vacancy bitmap frame as inaccessible\n");
 }
 
 unsigned long FramePool::get_frame() {
@@ -123,7 +124,7 @@ unsigned long FramePool::get_frame() {
 	}
 
 
-	printf("ERROR: FramePool could not find a vacant frame\n");
+	Console::puts("ERROR: FramePool could not find a vacant frame\n");
 	return 0;
 }
 
@@ -146,11 +147,11 @@ void FramePool::release_frame(unsigned long _frame_no) {
 
 		clear_nth_bit(frame_vacancy_bitmap, _frame_no);
 		
-		printf("SUCCESS: released frame <#%lu>\n", _frame_no);
+		Console::puts("SUCCESS: released frame");
 		return;
 	}
 
-	printf("ERROR: Failed to release frame <#%lu>\n", _frame_no);
+	Console::puts("ERROR: Failed to release frame");
 }
 
 /* 			BITMAP FUNCTIONS			*/
@@ -170,16 +171,16 @@ int FramePool::get_nth_bit(unsigned char *bitmap, int idx)
     return (bitmap[idx / CHAR_BIT] >> (idx % CHAR_BIT)) & 1;
 }
 
-void printVacancyBitmap() {
+void FramePool::printVacancyBitmap() {
 
-	printf("\nNon-zero bytes in the vacancy bitmap:\n");
+	// Console::puts("\nNon-zero bytes in the vacancy bitmap:\n");
 
-	int i;
-	for (i = 0; i < (num_frames / 8); i++) {
-		// int val = *(frame_vacancy_bitmap + i);
-		if (*(frame_vacancy_bitmap + i)) {
-			printf("bitmap[%d] = %d\n", i, *(frame_vacancy_bitmap + i));
-		}
-	}
-	printf("\n");
+	// int i;
+	// for (i = 0; i < (num_frames / 8); i++) {
+	// 	// int val = *(frame_vacancy_bitmap + i);
+	// 	if (*(frame_vacancy_bitmap + i)) {
+	// 		printf("bitmap[%d] = %d\n", i, *(frame_vacancy_bitmap + i));
+	// 	}
+	// }
+	// printf("\n");
 }
